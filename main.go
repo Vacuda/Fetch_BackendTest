@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"fmt"
+	"fmt"
 	//"reflect"
 	"time"
 	"os"
@@ -54,7 +54,11 @@ var UniqueID_Counter int = 1
 
 func main(){
 
-	ConfigureAndRun_LocalServer()
+	//ConfigureAndRun_LocalServer()
+
+	/*DEBUG*/
+	gatherReceipts_FromExamplesFolder()
+	DEBUG_handleGetPointsTotal()
 
 }
 
@@ -83,7 +87,6 @@ func ConfigureAndRun_LocalServer(){
 		curl http://localhost:8080/receipts/       /points
 		
 	*/
-
 }
 
 /* HANDLER FUNCTION */
@@ -108,19 +111,60 @@ func handleProcessReceipts(c *gin.Context){
 
 func handleGetPointsTotal(c *gin.Context){
 
-	//get id
+	//get id to use
 	id,_ := strconv.Atoi(c.Param("id"))
 
+	//get receipt pointer
+	var receipt *Receipt = Receipts[id]
 
+	//start total tally
+	var points int = 0
 
+	//find points to add
+	points += PointsTally_Rule1(receipt)
+	points += PointsTally_Rule2(receipt)
+	points += PointsTally_Rule3(receipt)
+	points += PointsTally_Rule4(receipt)
+	points += PointsTally_Rule5(receipt)
+	points += PointsTally_Rule6(receipt)
+	points += PointsTally_Rule7(receipt)
 
-
-
-
-
-	c.IndentedJSON(http.StatusOK, Receipts[id])
-
+	//send points to client
+	//c.IndentedJSON(http.StatusOK, points)
+	
+	/*DEBUG*/
+	fmt.Println(points)
 }
+
+/* DEBUG */
+func DEBUG_handleGetPointsTotal(){
+
+	//get id to use
+	var id int = 1
+
+	//get receipt pointer
+	var receipt *Receipt = Receipts[id]
+
+	//start total tally
+	var points int = 0
+
+	//find points to add
+	points += PointsTally_Rule1(receipt)
+	points += PointsTally_Rule2(receipt)
+	points += PointsTally_Rule3(receipt)
+	points += PointsTally_Rule4(receipt)
+	points += PointsTally_Rule5(receipt)
+	points += PointsTally_Rule6(receipt)
+	points += PointsTally_Rule7(receipt)
+
+	//send points to client
+	//c.IndentedJSON(http.StatusOK, points)
+	
+	/*DEBUG*/
+	fmt.Print("Total Points: ")
+	fmt.Println(points)
+}
+
 
 
 /* UTILITIES */
