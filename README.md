@@ -2,6 +2,9 @@
 
 Hello and thank you for reviewing me!
 
+* Infrastructure code is in the main.go file
+* Points tallying code is in the points_tally.go file
+
 ## Acknowledgments
 
 * All receipts in the examples folder will be processed and given an id.  This is why an array of ids is the initial response.
@@ -13,7 +16,9 @@ By toggling comments in the main function, you'll be able to run the application
 
 ## Instructions To Run
 
-* In a terminal, go to the root directory of the project.
+* Clone this repo onto your local machine
+* I'm assuming you have Go installed
+* In a terminal, go to the root directory of the project
 * To test a unique receipt, just add one to the examples folder
 * Type: go run .
 
@@ -21,7 +26,7 @@ By toggling comments in the main function, you'll be able to run the application
 
 This is the default.  The web service will run until you manually exit it.(Ctrl + C)
 
-* Open a different terminal, again navigating to the root directory.
+* Open a different terminal, again navigating to the root directory
 * Type: curl http://localhost:8080/receipts/process
 * This returns an array of int ids according to the files in the examples folder
 * Type: curl http://localhost:8080/receipts/{id}/points
