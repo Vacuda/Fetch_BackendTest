@@ -20,12 +20,11 @@ type Item struct {
 }
 
 type Receipt struct{
-	ID 				int
-	Retailer 		string
-	PurchaseDate	time.Time
-	PurchaseTime	time.Time
-	Total			float32
-	Items        	[]*Item
+	ID 					int
+	Retailer 			string
+	PurchaseDateTime	time.Time
+	Total				float32
+	Items        		[]*Item
 }
 
 type Receipt_raw struct{
@@ -219,10 +218,18 @@ func Process_Raw_Receipt(rec *Receipt_raw) (*Receipt) {
 	//create unique ID for this receipt
 	receipt.ID = Get_UniqueID()
 
-	//process values for each member
+	//set DateTime - Merge Data and Time into one time object
+	{
+		//build layout strings to use in time.Parse
+		var layout string = "2006-01-02T15:04"
+		var datetime_string = rec.PurchaseDate + "T" + rec.PurchaseTime
+
+		//process datetime value
+		receipt.PurchaseDateTime,_ = time.Parse(layout, datetime_string)
+	}
+	
+	//process other values
 	receipt.Retailer = rec.Retailer
-	receipt.PurchaseDate,_ = time.Parse("YYYY-MM-DD", rec.PurchaseDate)			//@@@@ This doesn't work
-	receipt.PurchaseTime,_ = time.Parse("HH:MM", rec.PurchaseTime)				//@@@@ This doesn't work
 	receipt.Total = Parse_String_ToFloat32(rec.Total)
 	receipt.Items = make([]*Item, 0)
 

@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 	"math"
+	//"time"
+
 	//"reflect"
 	"unicode"
 	//"time"
 	//"strconv"
 )
-
 
 /* POINTS TALLY BY RULES */
 
@@ -85,29 +86,35 @@ func PointsTally_Rule4(rec *Receipt) (int){
 	return points
 }
 
-//if trimmed length of desc multiple of 3, multiple price by 0.2, round up, result is points earned
-//I'm assuming trimmed length means we are taking out the whitespaces
-func PointsTally_Rule5(rec *Receipt) (int){
 
+//if trimmed length of desc multiple of 3, multiple price by 0.2, round up, result is points earned
+func PointsTally_Rule5(rec *Receipt) (int){
+	
 	//start total tally
 	var points int = 0
-
+	
 	//loop Items
 	for _,i := range rec.Items{
-
+		
 		//get length of ShortDescription chars
 		var amount int = len(i.ShortDescription)
+		
+		/* 
+		I first thought trimmed length may mean removing the white spaces, but that doesn't match one of the
+		examples given.  So, I'm thinking trimmed length of the item description just is another way to say
+		short description
+		*/
 
-		//loop ShortDescription
-		for _,char := range i.ShortDescription{
+		// //loop ShortDescription
+		// for _,char := range i.ShortDescription{
 			
-			//if unicode whitespace
-			if(unicode.IsSpace(char)){
+		// 	//if unicode whitespace
+		// 	if(unicode.IsSpace(char)){
 				
-				//decrement amount
-				amount--;
-			}
-		}
+		// 		//decrement amount
+		// 		amount--;
+		// 	}
+		// }
 
 		//if amount multiple of 3
 		if(amount % 3 == 0){
@@ -124,12 +131,46 @@ func PointsTally_Rule5(rec *Receipt) (int){
 	return points
 }
 
+//+6 = day of purchase date is odd
 func PointsTally_Rule6(rec *Receipt) (int){
-	return 1
+
+		//start total tally
+		var points int = 0
+
+		//if day is odd
+		if(rec.PurchaseDateTime.Day() % 2 != 0){
+			points += 6
+		}
+
+		/*DEBUG*/
+		fmt.Print("Total Points - Rule6: ")
+		fmt.Println(points)
+	
+		return points
 }
 
+//+10 = Time is between 2-4pm
 func PointsTally_Rule7(rec *Receipt) (int){
-	return 1
+
+	//start total tally
+	var points int = 0
+
+	//get hour
+	var hour int = rec.PurchaseDateTime.Hour()
+
+	//if after 2pm(14) and before 4pm(16)
+	if(hour == 14 || hour == 15){
+
+		/* I'm assuming here that 2pm is inclusive and 4pm is exclusive */
+
+		points += 10
+	}
+
+	/*DEBUG*/
+	fmt.Print("Total Points - Rule7: ")
+	fmt.Println(points)
+
+	return points
 }
 
 
