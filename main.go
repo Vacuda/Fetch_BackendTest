@@ -70,7 +70,7 @@ func main(){
 	/* SECTION B */
 
 	// id_to_tally = 4    /* Change ID Here to change which receipt is run 1-4 */
-	// gatherReceipts_FromExamplesFolder()
+	// GatherReceipts_FromExamplesFolder()
 	// DEBUG_handleGetPointsTotal()
 
 }
@@ -106,7 +106,7 @@ func ConfigureAndRun_LocalServer(){
 
 func handleProcessReceipts(c *gin.Context){
 
-	gatherReceipts_FromExamplesFolder()
+	GatherReceipts_FromExamplesFolder()
 
 	//make slice of ids, empty but capacity set at the length of the map
 	ids := make([]int, 0, len(Receipts))
@@ -192,7 +192,7 @@ func DEBUG_handleGetPointsTotal(){
 
 /* UTILITIES */
 
-func gatherReceipts_FromExamplesFolder(){
+func GatherReceipts_FromExamplesFolder(){
 
 	/* This enables you to put new receipts in the examples folder and they will be processed */
 
