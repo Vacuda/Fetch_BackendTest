@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	//"reflect"
 	"time"
 	"os"
 	"encoding/json"
@@ -38,8 +37,13 @@ type Receipt_raw struct{
 	} 	
 }
 
-	
+type response_ids struct {
+	Ids			[]int
+}
 
+type response_points struct {
+	Points		int
+}
 
 /* DATA */
 
@@ -53,11 +57,13 @@ var UniqueID_Counter int = 1
 
 func main(){
 
-	//ConfigureAndRun_LocalServer()
+	/* Run Code With Web Service - UnComment This */
 
-	/*DEBUG*/
-	gatherReceipts_FromExamplesFolder()
-	DEBUG_handleGetPointsTotal()
+	ConfigureAndRun_LocalServer()
+
+	/* Run Code Without Web Service - Uncomment This */
+	// gatherReceipts_FromExamplesFolder()
+	// DEBUG_handleGetPointsTotal()
 
 }
 
@@ -88,7 +94,7 @@ func ConfigureAndRun_LocalServer(){
 	*/
 }
 
-/* HANDLER FUNCTION */
+/* HANDLER FUNCTIONS */
 
 func handleProcessReceipts(c *gin.Context){
 
@@ -103,43 +109,66 @@ func handleProcessReceipts(c *gin.Context){
 		ids = append(ids, key)
 	}
 
-	//format ids into JSON and send to client
-	c.IndentedJSON(http.StatusOK, ids)
+	//create response package
+	res := new(response_ids)
+	res.Ids = ids
 
+	//send response to client
+	c.JSON(http.StatusOK, res)
 }
+
+
+
 
 func handleGetPointsTotal(c *gin.Context){
 
 	//get id to use
 	id,_ := strconv.Atoi(c.Param("id"))
 
-	//get receipt pointer
-	var receipt *Receipt = Receipts[id]
+	//if id is in map
+	if _, ok := Receipts[id]; ok{
 
-	//start total tally
-	var points int = 0
+		//get receipt pointer
+		var receipt *Receipt = Receipts[id]
 
-	//find points to add
-	points += PointsTally_Rule1(receipt)
-	points += PointsTally_Rule2(receipt)
-	points += PointsTally_Rule3(receipt)
-	points += PointsTally_Rule4(receipt)
-	points += PointsTally_Rule5(receipt)
-	points += PointsTally_Rule6(receipt)
-	points += PointsTally_Rule7(receipt)
-
-	//send points to client
-	//c.IndentedJSON(http.StatusOK, points)
+		//start total tally
+		var points int = 0
 	
-	/*DEBUG*/
-	fmt.Println(points)
+		//find points to add
+		points += PointsTally_Rule1(receipt)
+		points += PointsTally_Rule2(receipt)
+		points += PointsTally_Rule3(receipt)
+		points += PointsTally_Rule4(receipt)
+		points += PointsTally_Rule5(receipt)
+		points += PointsTally_Rule6(receipt)
+		points += PointsTally_Rule7(receipt)
+
+		//create response package
+		res := new(response_points)
+		res.Points = points
+
+		//send response to client
+		c.JSON(http.StatusOK, res)
+		
+		/*DEBUG*/
+		fmt.Print("Total = = ")
+		fmt.Println(points)
+
+		
+	}else{
+		
+		//send bad request
+		c.JSON(http.StatusBadRequest, "Bad Request - ID Doesn't Exist")
+	}
 }
 
 /* DEBUG */
 func DEBUG_handleGetPointsTotal(){
 
+	/* Change ID Here to change which receipt is run 1-4 */
+
 	//get id to use
-	var id int = 2
+	var id int = 4
 
 	//get receipt pointer
 	var receipt *Receipt = Receipts[id]
@@ -156,9 +185,6 @@ func DEBUG_handleGetPointsTotal(){
 	points += PointsTally_Rule6(receipt)
 	points += PointsTally_Rule7(receipt)
 
-	//send points to client
-	//c.IndentedJSON(http.StatusOK, points)
-	
 	/*DEBUG*/
 	fmt.Print("Total Points: ")
 	fmt.Println(points)
@@ -271,4 +297,3 @@ func Get_UniqueID()(int){
 	//return stored value
 	return int_to_return
 }
-

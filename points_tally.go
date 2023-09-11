@@ -24,7 +24,7 @@ func PointsTally_Rule1(rec *Receipt) (int){
 	}
 
 	/*DEBUG*/
-	fmt.Print("Total Points - Rule1: ")
+	fmt.Print("Points - Rule1: ")
 	fmt.Println(points)
 
 	return points
@@ -42,7 +42,7 @@ func PointsTally_Rule2(rec *Receipt) (int){
 	}
 
 	/*DEBUG*/
-	fmt.Print("Total Points - Rule2: ")
+	fmt.Print("Points - Rule2: ")
 	fmt.Println(points)
 
 	return points
@@ -60,7 +60,7 @@ func PointsTally_Rule3(rec *Receipt) (int){
 	}
 
 	/*DEBUG*/
-	fmt.Print("Total Points - Rule3: ")
+	fmt.Print("Points - Rule3: ")
 	fmt.Println(points)
 
 	return points
@@ -76,7 +76,7 @@ func PointsTally_Rule4(rec *Receipt) (int){
 	points += 5*(int(len(rec.Items)/2))
 
 	/*DEBUG*/
-	fmt.Print("Total Points - Rule4: ")
+	fmt.Print("Points - Rule4: ")
 	fmt.Println(points)
 
 	return points
@@ -103,7 +103,7 @@ func PointsTally_Rule5(rec *Receipt) (int){
 	}
 
 	/*DEBUG*/
-	fmt.Print("Total Points - Rule5: ")
+	fmt.Print("Points - Rule5: ")
 	fmt.Println(points)
 
 	return points
@@ -121,7 +121,7 @@ func PointsTally_Rule6(rec *Receipt) (int){
 		}
 
 		/*DEBUG*/
-		fmt.Print("Total Points - Rule6: ")
+		fmt.Print("Points - Rule6: ")
 		fmt.Println(points)
 	
 		return points
@@ -145,7 +145,7 @@ func PointsTally_Rule7(rec *Receipt) (int){
 	}
 
 	/*DEBUG*/
-	fmt.Print("Total Points - Rule7: ")
+	fmt.Print("Points - Rule7: ")
 	fmt.Println(points)
 
 	return points
