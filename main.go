@@ -53,17 +53,25 @@ var Receipts = make(map[int]*Receipt)
 //rudementary counter to create UniqueIDs
 var UniqueID_Counter int = 1
 
+//non web service id to run
+var id_to_tally int
+
 /* MAIN */
 
 func main(){
 
-	/* Run Code With Web Service - UnComment This */
+	/* You can run this with or without the web service */
+	/* Uncomment just Section A = With Web Service */
+	/* Uncomment just Section B = Withou Web Service */
 
-	ConfigureAndRun_LocalServer()
+	/* SECTION A */
+	//ConfigureAndRun_LocalServer()
 
-	/* Run Code Without Web Service - Uncomment This */
-	// gatherReceipts_FromExamplesFolder()
-	// DEBUG_handleGetPointsTotal()
+	/* SECTION B */
+
+	id_to_tally = 4    /* Change ID Here to change which receipt is run 1-4 */
+	gatherReceipts_FromExamplesFolder()
+	DEBUG_handleGetPointsTotal()
 
 }
 
@@ -162,13 +170,8 @@ func handleGetPointsTotal(c *gin.Context){
 /* DEBUG */
 func DEBUG_handleGetPointsTotal(){
 
-	/* Change ID Here to change which receipt is run 1-4 */
-
-	//get id to use
-	var id int = 4
-
 	//get receipt pointer
-	var receipt *Receipt = Receipts[id]
+	var receipt *Receipt = Receipts[id_to_tally]
 
 	//start total tally
 	var points int = 0
@@ -194,7 +197,7 @@ func gatherReceipts_FromExamplesFolder(){
 	/* This enables you to put new receipts in the examples folder and they will be processed */
 
 	//read directory of examples
-	file, err := os.Open("exampes/")
+	file, err := os.Open("examples/")
 
 	//err check
 	if err != nil {
