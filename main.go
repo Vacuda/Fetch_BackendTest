@@ -117,9 +117,6 @@ func handleProcessReceipts(c *gin.Context){
 	c.JSON(http.StatusOK, res)
 }
 
-
-
-
 func handleGetPointsTotal(c *gin.Context){
 
 	//get id to use
@@ -190,8 +187,6 @@ func DEBUG_handleGetPointsTotal(){
 	fmt.Println(points)
 }
 
-
-
 /* UTILITIES */
 
 func gatherReceipts_FromExamplesFolder(){
@@ -199,7 +194,7 @@ func gatherReceipts_FromExamplesFolder(){
 	/* This enables you to put new receipts in the examples folder and they will be processed */
 
 	//read directory of examples
-	file, err := os.Open("examples/")
+	file, err := os.Open("exampes/")
 
 	//err check
 	if err != nil {
@@ -210,7 +205,12 @@ func gatherReceipts_FromExamplesFolder(){
 	defer file.Close()
 
 	//get filenames
-	ListOf_ExampleReceipt_FileNames,_ := file.Readdirnames(0)
+	ListOf_ExampleReceipt_FileNames, err := file.Readdirnames(0)
+
+	//err check
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//loop list of receipt file names
 	for _, name := range ListOf_ExampleReceipt_FileNames {
@@ -221,7 +221,6 @@ func gatherReceipts_FromExamplesFolder(){
 		//err check
 		if err != nil {
 			log.Fatal(err)
-			return
 		}
 		
 		//get raw receipt
@@ -250,11 +249,19 @@ func Process_Raw_Receipt(rec *Receipt_raw) (*Receipt) {
 		var layout string = "2006-01-02T15:04"
 		var datetime_string = rec.PurchaseDate + "T" + rec.PurchaseTime
 
-		//process datetime value
-		receipt.PurchaseDateTime,_ = time.Parse(layout, datetime_string)
+		//get parsed datetime
+		parsed_datetime, err := time.Parse(layout, datetime_string)
+
+		//err check
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		//set datetime value
+		receipt.PurchaseDateTime = parsed_datetime
 	}
 	
-	//process other values
+	//set other values
 	receipt.Retailer = rec.Retailer
 	receipt.Total = Parse_String_ToFloat32(rec.Total)
 	receipt.Items = make([]*Item, 0)
@@ -279,8 +286,12 @@ func Process_Raw_Receipt(rec *Receipt_raw) (*Receipt) {
 func Parse_String_ToFloat32(s string) (float32){
 
 	//get float64
-	var num float64
-	num,_ = strconv.ParseFloat(s, 32)
+	num, err := strconv.ParseFloat(s, 32)
+
+	//err check
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//return float32
 	return float32(num)
