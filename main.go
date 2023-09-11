@@ -139,7 +139,7 @@ func handleGetPointsTotal(c *gin.Context){
 func DEBUG_handleGetPointsTotal(){
 
 	//get id to use
-	var id int = 1
+	var id int = 2
 
 	//get receipt pointer
 	var receipt *Receipt = Receipts[id]

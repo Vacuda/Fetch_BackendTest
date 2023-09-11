@@ -3,12 +3,8 @@ package main
 import (
 	"fmt"
 	"math"
-	//"time"
-
-	//"reflect"
+	"strings"
 	"unicode"
-	//"time"
-	//"strconv"
 )
 
 /* POINTS TALLY BY RULES */
@@ -86,7 +82,6 @@ func PointsTally_Rule4(rec *Receipt) (int){
 	return points
 }
 
-
 //if trimmed length of desc multiple of 3, multiple price by 0.2, round up, result is points earned
 func PointsTally_Rule5(rec *Receipt) (int){
 	
@@ -95,27 +90,10 @@ func PointsTally_Rule5(rec *Receipt) (int){
 	
 	//loop Items
 	for _,i := range rec.Items{
-		
-		//get length of ShortDescription chars
-		var amount int = len(i.ShortDescription)
-		
-		/* 
-		I first thought trimmed length may mean removing the white spaces, but that doesn't match one of the
-		examples given.  So, I'm thinking trimmed length of the item description just is another way to say
-		short description
-		*/
 
-		// //loop ShortDescription
-		// for _,char := range i.ShortDescription{
-			
-		// 	//if unicode whitespace
-		// 	if(unicode.IsSpace(char)){
-				
-		// 		//decrement amount
-		// 		amount--;
-		// 	}
-		// }
-
+		//get trimmed length of ShortDescription chars
+		var amount int = len(strings.TrimSpace(i.ShortDescription))
+	
 		//if amount multiple of 3
 		if(amount % 3 == 0){
 
@@ -172,7 +150,3 @@ func PointsTally_Rule7(rec *Receipt) (int){
 
 	return points
 }
-
-
-
-/* UTILITIES */
