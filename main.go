@@ -65,13 +65,13 @@ func main(){
 	/* Uncomment just Section B = Withou Web Service */
 
 	/* SECTION A */
-	//ConfigureAndRun_LocalServer()
+	ConfigureAndRun_LocalServer()
 
 	/* SECTION B */
 
-	id_to_tally = 4    /* Change ID Here to change which receipt is run 1-4 */
-	gatherReceipts_FromExamplesFolder()
-	DEBUG_handleGetPointsTotal()
+	// id_to_tally = 4    /* Change ID Here to change which receipt is run 1-4 */
+	// gatherReceipts_FromExamplesFolder()
+	// DEBUG_handleGetPointsTotal()
 
 }
 
